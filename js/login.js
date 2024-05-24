@@ -20,11 +20,11 @@ elNavInputChange.addEventListener("change", function(evt) {
   const imageUrl = URL.createObjectURL(file);
   elNavImgChange.src = imageUrl;
 
-
+  // Faylni brauzer xotirasiga saqlash
   window.localStorage.setItem("navImage", imageUrl);
 });
 
-
+// ------ modal  start ----- 
 
 let datas =JSON.parse(window.localStorage.getItem("datas")) || []
 elAddBtn.addEventListener("click",function(){
@@ -64,7 +64,7 @@ elAddBtn.addEventListener("click",function(){
         </div>
         <div class="mt-[40px] flex  justify-center mb-[30px]">
 
-          <button class="w-[45%] h-[50px] py-[8px] pl-[15px] bg-orange-800  ">Add+</button>
+          <button class="w-[45%] h-[50px] py-[8px] pl-[15px] bg-orange-800 hover:opacity-70 ease-out duration-300 text-white text-[20px] rounded-[4px] ">Add+</button>
         </div>
       </div>
     </form>
@@ -108,6 +108,7 @@ elModalWrapper.addEventListener("click", function(evt){
 })
 
 
+// ------ modal  end ----- 
 
 function renderCrud(arr,list){
   let newTime = (`${dataTime.getDate().toString().padStart(2,"0")}.${(dataTime.getMonth() + 1).toString().padStart(2,"0")}.${dataTime.getFullYear()}  ${dataTime.getHours().toString().padStart(2,"0")}:${dataTime.getMinutes().toString().padStart(2,"0")} `)
@@ -143,11 +144,14 @@ function renderCrud(arr,list){
 renderCrud(datas,elList)
 
 
-
+// Update part start 
 let elUpdateForm = document.querySelector(".update-form");
 let elUpdateInputImg = document.querySelector(".update-img-input");
 let elUpdateImg = document.querySelector(".update-img");
 
+// elUpdateInputImg.addEventListener("change", function(evt){
+//   elUpdateImg.src = URL.createObjectURL(evt.target.files[0]);
+// });
 
 
 function updateCrud(id) {
@@ -190,7 +194,7 @@ function updateCrud(id) {
             <span class="text-[15px] font-semibold">Enter date</span>
             <input class="py-[8px] pl-[15px] pr-[5px] rounded-[4px] outline-none" type="date"/> 
           </label>
-          <button type="submit" class="w-[45%] h-[50px] py-[8px] pl-[15px] bg-orange-800  ">Update</button>
+          <button type="submit" class="w-[45%] h-[50px] py-[8px] pl-[15px] bg-orange-800 hover:opacity-70 ease-out duration-300 text-white text-[20px] rounded-[4px] ">Update</button>
         </div>
       </div>
     </form>
@@ -199,7 +203,11 @@ function updateCrud(id) {
  
   elUpdateForm.addEventListener("submit", function(evt) {
     evt.preventDefault();
-
+    // const file = evt.target[0].files[0];
+    // if (file) {
+    //   data.img = URL.createObjectURL(file);
+    //   document.querySelector(".update-img").src = data.img;
+    // }
     data.img = evt.target.files[0]
     data.name = evt.target[1].value;
     data.email = evt.target[2].value;
@@ -213,6 +221,11 @@ function updateCrud(id) {
 
 
 
+// Update part end
+
+
+
+// delete part start 
 
 function deleteCrud(id){
   let finedIndex =datas.findIndex(item=>item.id==id)
@@ -227,7 +240,11 @@ function deleteCrud(id){
   }
 }
 
+//delete part end 
 
+
+
+// Search start 
 elSearchInput.addEventListener("keyup",function(evt){
 let  data = datas.filter(item=>item.name.toLowerCase().includes(evt.target.value.toLowerCase()))
 elSearchList.innerHTML=``
@@ -268,19 +285,24 @@ elSearchInput.addEventListener("blur",function(evt){
 })
 
 
+// Search end
+
+
+
+// logout 
 elBtnLogout.addEventListener("click", function(evt){
   evt.preventDefault()
   elModalWrapper.classList.add("open-modal")
   elModal.innerHTML=`
   <div class=" logout-form w-[100%] mx-auto">
-   
-    <div class="mx-auto mt-[120px]  flex gap-[100px] flex-col justify-center items-center">
+    <img id="modal-imgx" class="modal-imgx hover:scale-125 ease-out duration-300 flex justify-end top-[20px] absolute right-[20px] cursor-pointer" src="https://cdn4.iconfinder.com/data/icons/generic-interaction/143/close-x-cross-multiply-delete-cancel-modal-error-no-512.png" alt="modal-icon" width="30" height="30">
+  <div class="mx-auto mt-[120px]  flex gap-[100px] flex-col justify-center items-center">
   <div class="">
   <h2 class="text-[44px] font-semibold">Log out the page ?</h2>
   </div>
   <div class="flex gap-[30px] items-center">
-  <button id="0" onclick="cancelBtn()" >return</button>
-  <button id="1" onclick="logoutBtn()" >Yes</button>
+  <button id="0" onclick="cancelBtn()" class="hover:opacity-50 ease-out duration-300 text-[24px] w-[180px] py-[9px] px-[15px] bg-white rounded-[8px] text-[#FEAF00]">Cancel</button>
+  <button id="1" onclick="logoutBtn()" class="hover:opacity-50 ease-out duration-300 text-[24px] w-[180px] py-[9px] px-[15px] bg-[#9A3412] rounded-[8px] text-white">Yes</button>
   </div>
   </div>
   </div>
@@ -299,16 +321,17 @@ function logoutBtn(){
 }
 
 
-
+// localStorage dan login ma'lumotini olish
 let savedLogin = localStorage.getItem("login");
 
+// elTitle elementini tanlash
 let elTitle = document.querySelector(".title");
 
-
+// localStorage da login ma'lumoti borligini tekshirish
 if (savedLogin) {
-  
+    // elTitle elementining textContentiga login ma'lumotini joylash
     elTitle.textContent = savedLogin;
 } else {
-   
+    // localStorage da login ma'lumoti yo'q bo'lsa, bo'sh qoldirish
     elTitle.textContent = "";
 }
